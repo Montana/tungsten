@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/cloudflare/cloudflare-go"
 )
@@ -93,54 +94,34 @@ func manageArgoRolloutsTraffic(routing TrafficRouting) error {
 	return nil
 }
 
+func handleRequest(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+		var routing TrafficRouting
+		err := json.NewDecoder(r.Body).Decode(&routing)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		err = manageArgoRolloutsTraffic(routing)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		fmt.Fprintf(w, "Argo Rollouts traffic managed successfully.\n")
+
+	default:
+		http.Error(w, "Unsupported request method.", http.StatusMethodNotAllowed)
+	}
+}
+
 func main() {
-	apiKey := os.Getenv("CLOUDFLARE_API_KEY")
-	email := os.Getenv("CLOUDFLARE_EMAIL")
-	zoneName := os.Getenv("CLOUDFLARE_ZONE_NAME")
-
-	if apiKey == "" || email == "" || zoneName == "" {
-		log.Fatal("CLOUDFLARE_API_KEY, CLOUDFLARE_EMAIL, and CLOUDFLARE_ZONE_NAME must be set")
+	http.HandleFunc("/manage-traffic", handleRequest)
+	port := ":8080"
+	fmt.Printf("Starting server on port %s\n", port)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
 	}
-
-	api, err := cloudflare.New(apiKey, email)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	zoneID, err := api.ZoneIDByName(zoneName)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	records, err := api.DNSRecords(zoneID, cloudflare.DNSRecord{})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Cloudflare DNS Records:")
-	for _, record := range records {
-		fmt.Printf("Record: %s - Type: %s - Content: %s\n", record.Name, record.Type, record.Content)
-	}
-
-	applications, err := getArgoCDApplications()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("\nArgo CD Applications:")
-	for _, app := range applications {
-		fmt.Printf("Application: %s\n", app.Metadata.Name)
-	}
-
-	trafficRouting := TrafficRouting{
-		Name:      "example-rollout",
-		Namespace: "default",
-		Weight:    50, // Example weight, adjust as needed
-	}
-	err = manageArgoRolloutsTraffic(trafficRouting)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("\nArgo Rollouts traffic managed successfully.")
 }
