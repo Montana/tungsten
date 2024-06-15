@@ -1,6 +1,6 @@
 # tungsten
 
-Tungsten is a Go application that interacts with Cloudflare, Argo CD, and Argo Rollouts. It lists DNS records from Cloudflare, applications from Argo CD, and manages traffic routing in Argo Rollouts.
+Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP requests) to manage traffic in Argo Rollouts.
 
 ## Prerequisites
 
