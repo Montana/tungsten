@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/cloudflare/cloudflare-go"
+	"github.com/philippgille/gokrok"
 )
 
 type ArgoApplication struct {
@@ -121,6 +122,18 @@ func main() {
 	http.HandleFunc("/manage-traffic", handleRequest)
 	port := ":8080"
 	fmt.Printf("Starting server on port %s\n", port)
+
+	opts := gokrok.Options{
+		Addr: port,
+	}
+	tunnel, err := gokrok.Start(opts)
+	if err != nil {
+		log.Fatalf("Failed to start ngrok tunnel: %v", err)
+	}
+	defer tunnel.Stop()
+
+	fmt.Printf("ngrok tunnel started at %s\n", tunnel.URL())
+
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
