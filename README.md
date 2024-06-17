@@ -81,7 +81,8 @@ Please look at the `Dockerfile` that's in this repository in the root directory.
 
 This explains the flow of how ngrok interacts with Argo and routes traffic:
 
-![9d1907a4-07a1-40e3-bf8f-c59abfdd7c3b](https://github.com/Montana/tungsten/assets/20936398/d1a368cd-ee02-4d8e-aa46-e73fe6065329)
+![Tungsten](https://github.com/Montana/tungsten/assets/20936398/86725aaa-09aa-45ba-acaf-c640d91d1ccc)
+
 
 Let's move on to `curl` now.
 
