@@ -17,6 +17,12 @@ First clone the Tungsten repository:
    git clone https://github.com/Montana/tungsten.git
    cd tungsten
    ```
+Make sure everything is there, run: 
+
+```bash
+ls -al
+```
+When in the directory, if everything is there - we can move on.
 
 ## Add tungsten into your Go project
 
