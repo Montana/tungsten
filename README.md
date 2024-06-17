@@ -1,5 +1,3 @@
-![9d1907a4-07a1-40e3-bf8f-c59abfdd7c3b](https://github.com/Montana/tungsten/assets/20936398/d1a368cd-ee02-4d8e-aa46-e73fe6065329)# tungsten
-
 ![Tungsten](https://github.com/Montana/tungsten/assets/20936398/2b3fd18e-3275-48f3-8a63-df576c388315)
 
 Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP requests) to manage traffic in Argo Rollouts.
@@ -79,8 +77,13 @@ The server will start on port 8080 inside the container, and an ngrok tunnel wil
    ```
 Please look at the `Dockerfile` that's in this repository in the root directory. 
 
-![Untitled diagram-2024-06-17-233853](https://github.com/Montana/tungsten/assets/20936398/c1795db1-919b-450d-989f-6676bf526088)
+## Flowchart 
 
+This explains the flow of how ngrok interacts with Argo and routes traffic:
+
+![9d1907a4-07a1-40e3-bf8f-c59abfdd7c3b](https://github.com/Montana/tungsten/assets/20936398/d1a368cd-ee02-4d8e-aa46-e73fe6065329)
+
+Let's move on to `curl` now.
 
 ## Using curl
 
