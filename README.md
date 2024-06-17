@@ -1,6 +1,6 @@
 ![Tungsten](https://github.com/Montana/tungsten/assets/20936398/2b3fd18e-3275-48f3-8a63-df576c388315)
 
-Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP requests) to manage traffic in Argo Rollouts.
+Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP requests) to manage traffic in Argo Rollouts using ngrok as a tunneling service for Travis CI.
 
 ## Prerequisites
 
@@ -122,7 +122,7 @@ func getArgoCDApplications() ([]ArgoApplication, error) {
         return nil, fmt.Errorf("ARGOCD_URL and ARGOCD_TOKEN must be set")
     }
 
-    client := tungsten.NewClient() // Using tungsten to create a new client
+    client := tungsten.NewClient() 
     req, err := tungsten.NewRequest("GET", fmt.Sprintf("%s/api/v1/applications", argoCDURL), nil) // Using tungsten to create a new request
     if err != nil {
         return nil, err
