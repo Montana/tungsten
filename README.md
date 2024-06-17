@@ -53,6 +53,33 @@ The server will start on port 8080, and an ngrok tunnel will be created. The tun
         }
       ```
 
+## Running the Application with Docker
+
+Build the Docker image:
+
+   ```sh
+    docker build -t tungsten .
+   ```
+
+ Run the Docker container:
+
+   ```sh
+    docker run -d -p 8080:8080 \
+    -e ARGOCD_URL=https://your-argocd-url \
+    -e ARGOCD_TOKEN=your-argocd-token \
+    -e ARGOROLLOUTS_URL=https://your-argorollouts-url \
+    -e ARGOROLLOUTS_TOKEN=your-argorollouts-token \
+    argo-traffic-management
+   ```
+
+The server will start on port 8080 inside the container, and an ngrok tunnel will be created. The tunnel URL will be printed in the container logs. Check the container logs to get the ngrok tunnel URL:
+
+   ```sh
+    docker logs <container_id>
+   ```
+
+## Using curl
+
 Example `curl` command:
 
    ```sh
