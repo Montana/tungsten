@@ -1,3 +1,50 @@
+// Author: Michael Allen Mendy, 2024 for Travis CI.
+
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"time"
+
+	"github.com/cloudflare/cloudflare-go"
+	"github.com/philippgille/gokrok"
+)
+
+type ArgoApplication struct {
+	Metadata struct {
+		Name string `json:"name"`
+	} `json:"metadata"`
+}
+
+type TrafficRouting struct {
+	Name      string `json:"name"`
+	Namespace string `json:"namespace"`
+	Weight    int    `json:"weight"`
+}
+
+func getArgoCDApplications() ([]ArgoApplication, error) {
+	argoCDURL := os.Getenv("ARGOCD_URL")
+	argoCDToken := os.Getenv("ARGOCD_TOKEN")
+
+	if argoCDURL == "" || argoCDToken == "" {
+		return nil, fmt.Errorf("ARGOCD_URL and ARGOCD_TOKEN must be set")
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/applications", argoCDURL), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", argoCDToken))
+	resp, err
+
+
 package main
 
 import (
