@@ -77,6 +77,7 @@ The server will start on port 8080 inside the container, and an ngrok tunnel wil
    ```sh
     docker logs <container_id>
    ```
+Please look at the Dockerfile that's in this repository in the root directory. 
 
 ## Using curl
 
