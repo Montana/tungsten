@@ -21,6 +21,63 @@ Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP request
    cd tungsten
    ```
 
+## Add tungsten into your Go project
+
+First install it through your CLI:
+
+```go
+go get -u github.com/Montana/tungsten
+```
+Then import it as a dependency in your `main.go`:
+
+```go
+import (
+    "github.com/Montana/tungsten"
+)
+```
+
+## Modify your existing functions
+
+Example modification in `getArgoCDApplications` function:
+
+```go
+func getArgoCDApplications() ([]ArgoApplication, error) {
+    argoCDURL := os.Getenv("ARGOCD_URL")
+    argoCDToken := os.Getenv("ARGOCD_TOKEN")
+
+    if argoCDURL == "" || argoCDToken == "" {
+        return nil, fmt.Errorf("ARGOCD_URL and ARGOCD_TOKEN must be set")
+    }
+
+    client := tungsten.NewClient() // Using tungsten to create a new client
+    req, err := tungsten.NewRequest("GET", fmt.Sprintf("%s/api/v1/applications", argoCDURL), nil) // Using tungsten to create a new request
+    if err != nil {
+        return nil, err
+    }
+
+    req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", argoCDToken))
+    resp, err := client.Do(req)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode != http.StatusOK {
+        return nil, fmt.Errorf("failed to get Argo CD applications, status code: %d", resp.StatusCode)
+    }
+
+    var applications struct {
+        Items []ArgoApplication `json:"items"`
+    }
+    err = json.NewDecoder(resp.Body).Decode(&applications)
+    if err != nil {
+        return nil, err
+    }
+
+    return applications.Items, nil
+}
+```
+
 ## Configuration
 
 Configure the application by setting the following environment variables. You can set them in a Bash script or directly in your shell.
