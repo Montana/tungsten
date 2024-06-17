@@ -2,7 +2,6 @@
 
 ![Tungsten](https://github.com/Montana/tungsten/assets/20936398/2b3fd18e-3275-48f3-8a63-df576c388315)
 
-
 Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP requests) to manage traffic in Argo Rollouts.
 
 ## Prerequisites
@@ -35,6 +34,39 @@ import (
     "github.com/Montana/tungsten"
 )
 ```
+ Run the application:
+
+   ```bash
+   go run main.go
+   ```
+The server will start on port 8080, and an ngrok tunnel will be created. The tunnel URL will be printed in the console, important to remember to use the HTTP endpoint to manage Argo Rollouts traffic:
+
+ - **Endpoint**: `/manage-traffic`
+ - **Method**: `POST`
+ - **Request Body**:
+
+   ```json
+        {
+            "name": "rollout-name",
+            "namespace": "rollout-namespace",
+            "weight": 50
+        }
+      ```
+
+Example `curl` command:
+
+   ```sh
+    curl -X POST -H "Content-Type: application/json" -d '{"name": "rollout-name", "namespace": "rollout-namespace", "weight": 50}' http://localhost:8080/manage-traffic
+   ```
+
+## Main Components
+
+- **ArgoApplication**: Struct to hold Argo CD application metadata.
+- **TrafficRouting**: Struct to define traffic routing for Argo Rollouts.
+- **getArgoCDApplications**: Function to fetch Argo CD applications.
+- **manageArgoRolloutsTraffic**: Function to manage Argo Rollouts traffic routing.
+- **handleRequest**: HTTP handler for managing traffic.
+- **startServer**: Function to start the HTTP server and ngrok tunnel.
 
 ## Modify your existing functions
 
