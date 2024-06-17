@@ -124,4 +124,4 @@ Configure the application by setting the following environment variables. You ca
 
 ## Copyright
 
-Michael Allen Mendy. (c) 2024.
+Creator and Maintainer: _Michael Allen Mendy_. (c) 2024.
