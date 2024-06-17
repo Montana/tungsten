@@ -11,7 +11,7 @@ Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP request
 
 ## Installation
 
-1. **Clone the repository:**
+First clone the Tungsten repository: 
 
    ```bash
    git clone https://github.com/Montana/tungsten.git
