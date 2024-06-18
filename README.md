@@ -163,6 +163,10 @@ Configure the application by setting the following environment variables. You ca
 - `ARGOROLLOUTS_URL`: The URL of your Argo Rollouts instance.
 - `ARGOROLLOUTS_TOKEN`: The API token for your Argo Rollouts instance.
 
+## Proxy option
+
+This code allows you to start either an ngrok tunnel or an Nginx reverse proxy based on an environment variable `PROXY_OPTION`. Make sure to set `PROXY_OPTION` to either "ngrok" or "nginx" to choose the appropriate option. Additionally, adjust the Nginx command and configuration path as needed for your environment.
+
 ## Copyright
 
 Creator and Maintainer: _Michael Allen Mendy_. (c) 2024.
