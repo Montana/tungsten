@@ -135,8 +135,7 @@ func startNgrokTunnel() (string, error) {
 }
 
 func startNginxReverseProxy() error {
-	// Example command to start nginx reverse proxy
-	// This should be adjusted according to the actual nginx configuration and environment
+	// example command to start nginx reverse proxy
 	cmd := exec.Command("nginx", "-c", "/etc/nginx/nginx.conf")
 	err := cmd.Run()
 	if err != nil {
