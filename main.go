@@ -1,7 +1,5 @@
 // Author and Maintainer: Michael Allen Mendy (c) 2024 for Travis CI.
 
-// Author and Maintainer: Michael Allen Mendy (c) 2024 for Travis CI.
-
 package main
 
 import (
