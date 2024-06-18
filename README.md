@@ -8,6 +8,9 @@ Tungsten is a Cloudflare worker that can continuously handle tasks (HTTP request
 - Cloudflare API credentials
 - Argo CD API credentials
 - Argo Rollouts API credentials
+- ngrok
+- nginx
+- Smallstep
 
 ## Installation
 
