@@ -98,7 +98,6 @@ This explains the flow of how ngrok interacts with Argo and routes traffic:
 
 ![Tungsten](https://github.com/Montana/tungsten/assets/20936398/86725aaa-09aa-45ba-acaf-c640d91d1ccc)
 
-
 Let's move on to `curl` now.
 
 ## Using curl
@@ -117,6 +116,12 @@ Example `curl` command:
 - **manageArgoRolloutsTraffic**: Function to manage Argo Rollouts traffic routing.
 - **handleRequest**: HTTP handler for managing traffic.
 - **startServer**: Function to start the HTTP server and ngrok tunnel.
+
+<br>
+
+<img width="748" alt="Screenshot 2024-06-17 at 11 38 28 PM" src="https://github.com/Montana/tungsten/assets/20936398/fee57bde-63d6-4e6e-9f9a-1fd246cfebcf">
+
+</br>
 
 ## Modify your existing functions
 
