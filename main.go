@@ -1,5 +1,7 @@
 // Author and Maintainer: Michael Allen Mendy (c) 2024 for Travis CI.
 
+// Author and Maintainer: Michael Allen Mendy (c) 2024 for Travis CI.
+
 package main
 
 import (
@@ -9,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"time"
 
 	"github.com/cloudflare/cloudflare-go"
@@ -134,6 +137,8 @@ func startNgrokTunnel() (string, error) {
 }
 
 func startNginxReverseProxy() error {
+	// Example command to start nginx reverse proxy
+	// This should be adjusted according to the actual nginx configuration and environment
 	cmd := exec.Command("nginx", "-c", "/etc/nginx/nginx.conf")
 	err := cmd.Run()
 	if err != nil {
@@ -142,8 +147,18 @@ func startNginxReverseProxy() error {
 	return nil
 }
 
+func configureSmallstep() error {
+	// adjust according to your actual smallstep configuration and environment
+	cmd := exec.Command("step", "certificates", "renew", "--daemon")
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("failed to configure Smallstep: %v", err)
+	}
+	return nil
+}
+
 func main() {
-	// choose between ngrok and nginx reverse proxy based on an environment variable
+	// choose between ngrok, nginx reverse proxy, and smallstep based on an environment variable
 	proxyOption := os.Getenv("PROXY_OPTION")
 
 	switch proxyOption {
@@ -160,6 +175,13 @@ func main() {
 			log.Fatalf("Error starting nginx reverse proxy: %v", err)
 		}
 		fmt.Printf("nginx reverse proxy started\n")
+
+	case "smallstep":
+		err := configureSmallstep()
+		if err != nil {
+			log.Fatalf("Error configuring Smallstep: %v", err)
+		}
+		fmt.Printf("Smallstep certificate management configured\n")
 
 	default:
 		log.Fatalf("Unsupported proxy option: %s", proxyOption)
