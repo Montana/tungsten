@@ -119,7 +119,7 @@ Example `curl` command:
 
 <br>
 
-<img width="748" alt="Screenshot 2024-06-17 at 11 38 28 PM" src="https://github.com/Montana/tungsten/assets/20936398/fee57bde-63d6-4e6e-9f9a-1fd246cfebcf">
+<img width="945" alt="Screenshot 2024-06-17 at 11 43 53 PM" src="https://github.com/Montana/tungsten/assets/20936398/4787dc5a-eb79-4733-884b-f087a26c8242">
 
 </br>
 
