@@ -42,51 +42,6 @@ func getArgoCDApplications() ([]ArgoApplication, error) {
 	}
 
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", argoCDToken))
-	resp, err
-
-
-package main
-
-import (
-	"bytes"
-	"encoding/json"
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"time"
-
-	"github.com/cloudflare/cloudflare-go"
-	"github.com/philippgille/gokrok"
-)
-
-type ArgoApplication struct {
-	Metadata struct {
-		Name string `json:"name"`
-	} `json:"metadata"`
-}
-
-type TrafficRouting struct {
-	Name      string `json:"name"`
-	Namespace string `json:"namespace"`
-	Weight    int    `json:"weight"`
-}
-
-func getArgoCDApplications() ([]ArgoApplication, error) {
-	argoCDURL := os.Getenv("ARGOCD_URL")
-	argoCDToken := os.Getenv("ARGOCD_TOKEN")
-
-	if argoCDURL == "" || argoCDToken == "" {
-		return nil, fmt.Errorf("ARGOCD_URL and ARGOCD_TOKEN must be set")
-	}
-
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", fmt.Sprintf("%s/api/v1/applications", argoCDURL), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", argoCDToken))
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -165,21 +120,54 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func main() {
-	http.HandleFunc("/manage-traffic", handleRequest)
-	port := ":8080"
-	fmt.Printf("Starting server on port %s\n", port)
-
+func startNgrokTunnel() (string, error) {
 	opts := gokrok.Options{
-		Addr: port,
+		Addr: ":8080",
 	}
 	tunnel, err := gokrok.Start(opts)
 	if err != nil {
-		log.Fatalf("Failed to start ngrok tunnel: %v", err)
+		return "", fmt.Errorf("failed to start ngrok tunnel: %v", err)
 	}
 	defer tunnel.Stop()
 
-	fmt.Printf("ngrok tunnel started at %s\n", tunnel.URL())
+	return tunnel.URL(), nil
+}
+
+func startNginxReverseProxy() error {
+	cmd := exec.Command("nginx", "-c", "/etc/nginx/nginx.conf")
+	err := cmd.Run()
+	if err != nil {
+		return fmt.Errorf("failed to start nginx reverse proxy: %v", err)
+	}
+	return nil
+}
+
+func main() {
+	// choose between ngrok and nginx reverse proxy based on an environment variable
+	proxyOption := os.Getenv("PROXY_OPTION")
+
+	switch proxyOption {
+	case "ngrok":
+		url, err := startNgrokTunnel()
+		if err != nil {
+			log.Fatalf("Error starting ngrok tunnel: %v", err)
+		}
+		fmt.Printf("ngrok tunnel started at %s\n", url)
+
+	case "nginx":
+		err := startNginxReverseProxy()
+		if err != nil {
+			log.Fatalf("Error starting nginx reverse proxy: %v", err)
+		}
+		fmt.Printf("nginx reverse proxy started\n")
+
+	default:
+		log.Fatalf("Unsupported proxy option: %s", proxyOption)
+	}
+
+	http.HandleFunc("/manage-traffic", handleRequest)
+	port := ":8080"
+	fmt.Printf("Starting server on port %s\n", port)
 
 	if err := http.ListenAndServe(port, nil); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
