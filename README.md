@@ -38,6 +38,12 @@ import (
     "github.com/Montana/tungsten"
 )
 ```
+## Dynamic Proxy Configuration: 
+
+Depending on the `PROXY_OPTION` (nginx, ngrok, Smallstep) environment variable, this will start an ngrok tunnel for easy, temporary public URLs. Start an nginx reverse proxy for more controlled and stable proxy management, even configure Smallstep for automated certificate management, ensuring secure communication.
+
+## Running tungsten
+
  Run the application:
 
    ```bash
@@ -162,15 +168,6 @@ Configure the application by setting the following environment variables. You ca
 - `ARGOCD_TOKEN`: The API token for your Argo CD instance.
 - `ARGOROLLOUTS_URL`: The URL of your Argo Rollouts instance.
 - `ARGOROLLOUTS_TOKEN`: The API token for your Argo Rollouts instance.
-
-## Proxy option
-
-This code allows you to start either an ngrok tunnel or an Nginx reverse proxy based on an environment variable `PROXY_OPTION`. Make sure to set `PROXY_OPTION` to either "ngrok" or "nginx" to choose the appropriate option. Additionally, adjust the Nginx command and configuration path as needed for your environment.
-
-## Smallstep
-
-The `configureSmallstep` function starts the Smallstep certificate management using a command. Adjust the command as necessary to fit your specific Smallstep setup.
-Ensure you have Smallstep properly installed and configured on your system, and adjust the commands as needed for your environment.
 
 ## Copyright
 
