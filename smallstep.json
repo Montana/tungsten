@@ -1,0 +1,45 @@
+{
+  "authority": {
+    "provisioners": [
+      {
+        "name": "admin",
+        "type": "JWK",
+        "key": {
+          "use": "sig",
+          "kty": "EC",
+          "kid": "example-key-id",
+          "crv": "P-256",
+          "alg": "ES256",
+          "x": "example-x-coordinate",
+          "y": "example-y-coordinate"
+        }
+      }
+    ]
+  },
+  "address": ":443",
+  "dnsNames": ["example.com", "ca.example.com"],
+  "database": {
+    "type": "badgerV2",
+    "dataSource": "/home/step/db"
+  },
+  "logger": {
+    "format": "json"
+  },
+  "templates": {
+    "SSH": {
+      "UserCert": "ssh-user.tpl",
+      "HostCert": "ssh-host.tpl"
+    }
+  },
+  "tls": {
+    "cipherSuites": [
+      "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+      "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+      "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+      "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+    ],
+    "minVersion": 1.2,
+    "maxVersion": 1.3
+  },
+  "password": "example-password"
+}
