@@ -38,7 +38,7 @@ import (
     "github.com/Montana/tungsten"
 )
 ```
-## Dynamic Proxy Configuration: 
+## Dynamic Proxy Configuration
 
 Depending on the `PROXY_OPTION` (nginx, ngrok, Smallstep) environment variable, this will start an ngrok tunnel for easy, temporary public URLs. Start an nginx reverse proxy for more controlled and stable proxy management, even configure Smallstep for automated certificate management, ensuring secure communication.
 
